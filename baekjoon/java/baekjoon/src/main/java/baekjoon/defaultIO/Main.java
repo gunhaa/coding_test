@@ -3,7 +3,7 @@ package baekjoon.defaultIO;
 import java.io.*;
 import java.util.StringTokenizer;
 
-public class Solution {
+public class Main {
 
     public static void main(String[] args) throws IOException {
         System.setIn(new FileInputStream("path"));

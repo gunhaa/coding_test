@@ -1,10 +1,8 @@
 package baekjoon._8958;
 
 import java.io.*;
-import java.util.Arrays;
-import java.util.StringTokenizer;
 
-public class Solution {
+public class Main {
 
     /* https://www.acmicpc.net/problem/8958
     문제
