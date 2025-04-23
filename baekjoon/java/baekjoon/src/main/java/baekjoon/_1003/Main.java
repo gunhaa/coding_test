@@ -46,71 +46,50 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        String line;
-        while((line = br.readLine()) != null){
+        int count = Integer.parseInt(br.readLine());
 
+        for(int i=0; i<count; i++){
+            String line = br.readLine();
             int input = Integer.parseInt(line);
-            fibonacci(input);
-//            System.out.println(Arrays.toString(cache));
 
-            int[] sums = new int[2];
-            Arrays.stream(cache)
-                    .forEach(cacheState -> {
-                        sums[0] += cacheState.acc0;
-                        sums[1] += cacheState.acc1;
-                    });
-            bw.write(String.valueOf(sums[0]));
+            fiboPercolateUp(input);
+
+            bw.write(String.valueOf(cache[input].acc0));
             bw.write(" ");
-            bw.write(String.valueOf(sums[1]));
+            bw.write(String.valueOf(cache[input].acc1));
+            bw.newLine();
             bw.flush();
-
         }
+
+
+
 
     }
 
-    private static class CacheState {
-        int value;
+    static Cache[] cache;
+
+    static class Cache {
         int acc0;
         int acc1;
 
-        public CacheState(int value, int acc0, int acc1) {
-            this.value = value;
+        Cache(int acc0, int acc1){
             this.acc0 = acc0;
             this.acc1 = acc1;
         }
     }
 
-    private static CacheState[] cache;
-
-    private static void fibonacci(int i){
-        cache = new CacheState[i+1];
-        for (int j = 0; j <= i; j++) {
-            cache[j] = new CacheState(0, 0, 0);
+    static void fiboPercolateUp(int root){
+        cache = new Cache[root+1];
+        cache[0] = new Cache(1,0);
+        if(root > 0){
+            cache[1] = new Cache(0,1);
         }
 
-        cache[0].value = 0;
+        for(int i=2; i <= root; i++){
+            int acc0 = cache[i-2].acc0 + cache[i-1].acc0;
+            int acc1 = cache[i-2].acc1 + cache[i-1].acc1;
 
-    }
-
-    private static int fibonacciRecursive(int i){
-
-        if(i == 0){
-            cache[i].acc0 += 1;
-            return cache[0].value;
+            cache[i] = new Cache(acc0, acc1);
         }
-
-        if(i == 1){
-            cache[i].acc1 += 1;
-            return cache[1].value;
-        }
-
-        if(cache[i] != null){
-            return cache[i].value;
-        }
-
-        cache[i].acc0 += cache[i-1].acc0;
-        cache[i].acc1 += cache[i-1].acc1;
-        cache[i].value = fibonacciRecursive(i-1) + fibonacciRecursive(i-2);
-        return cache[i].value;
     }
 }
