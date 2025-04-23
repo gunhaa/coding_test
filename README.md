@@ -1,2 +1,3 @@
-- coding test 관련 공부는 앞으로 이곳에서 진행
-    - auto push 레포지토리는 그대로 사용하고(https://github.com/gunhaa/Programmers-Baekjoon), 해당 레포지토리도 추가적으로 사용
+- coding test 관련 기록
+    - auto push 레포지토리는 그대로 사용(https://github.com/gunhaa/Programmers-Baekjoon)
+    - 특별한 기록이 필요한 경우 해당 레포지토리에 기록
