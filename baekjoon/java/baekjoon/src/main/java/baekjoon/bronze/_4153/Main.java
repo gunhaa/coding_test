@@ -1,4 +1,4 @@
-package baekjoon._4153;
+package baekjoon.bronze._4153;
 
 import java.io.*;
 import java.util.*;
@@ -21,7 +21,7 @@ public class Main {
     */
 
     public static void main(String[] args) throws IOException {
-        System.setIn(new FileInputStream("src/main/java/baekjoon/_4153/input"));
+        System.setIn(new FileInputStream("src/main/java/baekjoon/bronze/_4153/input"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringBuilder sb = new StringBuilder();

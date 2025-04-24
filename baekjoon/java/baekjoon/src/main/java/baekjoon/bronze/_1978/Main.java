@@ -1,4 +1,4 @@
-package baekjoon._1978;
+package baekjoon.bronze._1978;
 
 import java.io.*;
 import java.util.StringTokenizer;
@@ -20,7 +20,7 @@ public class Main {
     */
 
     public static void main(String[] args) throws IOException {
-        System.setIn(new FileInputStream("src/main/java/baekjoon/_1978/input"));
+        System.setIn(new FileInputStream("src/main/java/baekjoon/bronze/_1978/input"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
