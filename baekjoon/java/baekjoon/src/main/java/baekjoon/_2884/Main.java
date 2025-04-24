@@ -69,4 +69,21 @@ public class Main {
             setMinute = alarmMin;
         }
     }
+
+    // java의 localtime 객체 이용한 깔끔한 풀이 방법
+
+    /*
+    String[] time = br.readLine().split(" ");
+    int hour = Integer.parseInt(time[0]);
+    int minute = Integer.parseInt(time[1]);
+
+    // LocalTime 객체 생성
+    LocalTime alarmTime = LocalTime.of(hour, minute);
+
+    // 45분 이전 시간 계산
+    LocalTime newTime = alarmTime.minusMinutes(45);
+
+    bw.write(newTime.getHour() + " " + newTime.getMinute());
+
+    */
 }
