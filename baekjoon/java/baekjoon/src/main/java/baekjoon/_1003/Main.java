@@ -1,10 +1,9 @@
 package baekjoon._1003;
 import java.io.*;
-import java.util.Arrays;
 
 public class Main {
 
-    /*
+    /* https://www.acmicpc.net/problem/1003
     문제
     다음 소스는 N번째 피보나치 수를 구하는 C++ 함수이다.
 
@@ -60,10 +59,6 @@ public class Main {
             bw.newLine();
             bw.flush();
         }
-
-
-
-
     }
 
     static Cache[] cache;
