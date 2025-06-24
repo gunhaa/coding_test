@@ -30,7 +30,7 @@ public class Main {
 
             Node[] nodes;
 
-            static class Node {
+            static class Node implements Comparable<Node>{
                 int data;
                 boolean marked;
                 LinkedList<Node> adj;
@@ -44,6 +44,12 @@ public class Main {
                 @Override
                 public String toString() {
                     return String.valueOf(data);
+                }
+
+
+                @Override
+                public int compareTo(Node o) {
+                    return data-o.data;
                 }
             }
 
@@ -63,6 +69,7 @@ public class Main {
                 if (!n2.adj.contains(n1)) {
                     n2.adj.add(n1);
                 }
+//                System.out.println("edge 추가: " + i1 + ", "+ i2);
             }
 
             List<Integer> dfs(int index) {
@@ -73,13 +80,7 @@ public class Main {
                 List<Integer> result = new ArrayList<>();
                 while (!stack.isEmpty()) {
                     Node node = stack.pop();
-
-                    if (node.adj.size() > 1) {
-                        System.out.println("adj size : " + node.adj.size());
-                        System.out.println(node.adj);
-                        node.adj.sort(Comparator.comparingInt((Node n) -> n.data).reversed());
-                    }
-
+                    Collections.sort(node.adj);
                     for (Node n : node.adj) {
                         if (!n.marked) {
                             n.marked = true;
@@ -90,7 +91,43 @@ public class Main {
                 }
                 return result;
             }
+
+            void dfsRecursive(Node node, List<Integer> result) {
+                node.marked = true;
+                result.add(node.data);
+
+                Collections.sort(node.adj);
+                for (Node neighbor : node.adj) {
+                    if (!neighbor.marked) {
+                        dfsRecursive(neighbor, result);
+                    }
+                }
+            }
+
+            List<Integer> bfs(int index) {
+                Node root = nodes[index];
+                ArrayList<Integer> bfsResult = new ArrayList<>();
+                Queue<Node> queue = new LinkedList<>();
+                queue.offer(root);
+                root.marked = true;
+
+                while (!queue.isEmpty()) {
+                    Node node = queue.poll();
+                    bfsResult.add(node.data);
+
+                    Collections.sort(node.adj);
+                    for (Node n : node.adj) {
+                        if (!n.marked) {
+                            n.marked = true;
+                            queue.offer(n);
+                        }
+                    }
+                }
+                return bfsResult;
+            }
         }
+
+
 
         // 1: size 2: iteration 3: startIdx
         StringTokenizer st = new StringTokenizer(br.readLine());
@@ -106,7 +143,17 @@ public class Main {
             graph.addEdge(i1, i2);
         }
 
-        List<Integer> dfsResult = graph.dfs(startIdx);
+
+//        List<Integer> dfsResult = graph.dfs(startIdx);
+        ArrayList<Integer> dfsResult = new ArrayList<>();
+        graph.dfsRecursive(graph.nodes[startIdx], dfsResult);
+
+        for (int i = 1; i <= size; i++) {
+            graph.nodes[i].marked = false;
+        }
+
+        List<Integer> bfsResult = graph.bfs(startIdx);
         System.out.println(dfsResult);
+        System.out.println(bfsResult);
     }
 }
