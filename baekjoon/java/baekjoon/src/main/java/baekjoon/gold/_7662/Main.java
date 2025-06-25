@@ -4,9 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Collections;
-import java.util.PriorityQueue;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
     /*
@@ -44,12 +42,14 @@ public class Main {
         int iter = Integer.parseInt(br.readLine());
 
         class DualPriorityQueue {
-            final PriorityQueue<Integer> MaxPriorityQueue;
-            final PriorityQueue<Integer> MinPriorityQueue;
+            final Map<Integer, Integer> syncMap;
+            final PriorityQueue<Integer> maxPriorityQueue;
+            final PriorityQueue<Integer> minPriorityQueue;
 
             public DualPriorityQueue() {
-                MaxPriorityQueue = new PriorityQueue<>(Collections.reverseOrder());
-                MinPriorityQueue = new PriorityQueue<>();
+                maxPriorityQueue = new PriorityQueue<>(Collections.reverseOrder());
+                minPriorityQueue = new PriorityQueue<>();
+                syncMap = new HashMap<>();
             }
 
             void parseOper(String operation, int argument) {
@@ -72,42 +72,94 @@ public class Main {
             }
 
             private void deleteMax() {
-                Integer max = this.MaxPriorityQueue.poll();
-                if(max == null) {
-                    return;
-                }
-                syncMax(max);
-            }
+                while(!this.maxPriorityQueue.isEmpty()) {
+                    Integer max = this.maxPriorityQueue.peek();
+                    Integer syncCount = this.syncMap.getOrDefault(max, 0);
+                    if (syncCount == 0) {
+                        this.maxPriorityQueue.poll();
+                        this.syncMap.remove(max);
+                        continue;
+                    }
+                    syncMap.put(max, syncCount - 1);
 
-            private void syncMax(int max) {
-                this.MinPriorityQueue.remove(max);
+//                    if (syncCount == 1) {
+//                        syncMap.remove(max);
+//                    } else {
+//                        syncMap.put(max, syncCount - 1);
+//                    }
+                    this.maxPriorityQueue.poll();
+                    break;
+                }
             }
 
             private void deleteMin() {
-                Integer min = this.MinPriorityQueue.poll();
-                if(min == null) {
-                    return;
-                }
-                syncMin(min);
-            }
+                while(!this.minPriorityQueue.isEmpty()) {
+                    Integer min = this.minPriorityQueue.peek();
+                    Integer syncCount = this.syncMap.getOrDefault(min, 0);
+                    if (syncCount == 0) {
+                        this.minPriorityQueue.poll();
+                        this.syncMap.remove(min);
+                        continue;
+                    }
 
-            private void syncMin(int min) {
-                this.MaxPriorityQueue.remove(min);
+                    syncMap.put(min, syncCount - 1);
+//
+//                    if (syncCount == 1) {
+//                        syncMap.remove(min);
+//                    } else {
+//                        syncMap.put(min, syncCount - 1);
+//                    }
+                    this.minPriorityQueue.poll();
+                    break;
+                }
             }
 
             private void addQueue(int argument){
-                this.MaxPriorityQueue.add(argument);
-                this.MinPriorityQueue.add(argument);
+                this.maxPriorityQueue.add(argument);
+                this.minPriorityQueue.add(argument);
+                this.syncMap.put(argument, this.syncMap.getOrDefault(argument, 0) + 1);
             }
 
             void display() {
-                if(this.MaxPriorityQueue.isEmpty() && this.MinPriorityQueue.isEmpty()) {
+
+                cleanUp();
+
+//                System.out.println(this.syncMap);
+//                System.out.println(this.maxPriorityQueue);
+//                System.out.println(this.minPriorityQueue);
+
+
+                if(this.minPriorityQueue.isEmpty() && this.maxPriorityQueue.isEmpty()) {
                     System.out.println("EMPTY");
+                    this.syncMap.clear();
                     return;
                 }
-                Integer max = this.MaxPriorityQueue.peek();
-                Integer min = this.MinPriorityQueue.peek();
+                Integer max = this.maxPriorityQueue.peek();
+                Integer min = this.minPriorityQueue.peek();
+                this.minPriorityQueue.clear();
+                this.maxPriorityQueue.clear();
+                this.syncMap.clear();
                 System.out.println(max + " " + min);
+            }
+
+            private void cleanUp() {
+                while (!this.maxPriorityQueue.isEmpty()) {
+                    Integer max = this.maxPriorityQueue.peek();
+                    if (this.syncMap.containsKey(max) && this.syncMap.get(max)>0) {
+                        break;
+                    }
+                    this.syncMap.remove(max);
+                    this.maxPriorityQueue.poll();
+                }
+
+                while (!this.minPriorityQueue.isEmpty()) {
+                    Integer min = this.minPriorityQueue.peek();
+                    if (this.syncMap.containsKey(min)&& this.syncMap.get(min)>0) {
+                        break;
+                    }
+                    this.syncMap.remove(min);
+                    this.minPriorityQueue.poll();
+                }
             }
         }
 
