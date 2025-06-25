@@ -2,8 +2,9 @@ package baekjoon.silver._1260;
 
 import java.io.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
-public class Main {
+public class MainV1 {
     /*
     DFS와 BFS
     시간 제한	메모리 제한	제출	정답	맞힌 사람	정답 비율
@@ -30,7 +31,7 @@ public class Main {
 
             Node[] nodes;
 
-            static class Node implements Comparable<Node>{
+            /* static */ class Node implements Comparable<Node>{
                 int data;
                 boolean marked;
                 LinkedList<Node> adj;
@@ -153,7 +154,13 @@ public class Main {
         }
 
         List<Integer> bfsResult = graph.bfs(startIdx);
-        System.out.println(dfsResult);
-        System.out.println(bfsResult);
+        String dfsResult1 = dfsResult.stream()
+                .map(String::valueOf)
+                .collect(Collectors.joining(" "));
+        String bfsResult1 = bfsResult.stream()
+                .map(String::valueOf)
+                .collect(Collectors.joining(" "));
+        System.out.println(dfsResult1);
+        System.out.println(bfsResult1);
     }
 }
