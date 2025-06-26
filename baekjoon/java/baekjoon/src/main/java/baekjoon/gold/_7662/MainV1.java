@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 
-public class Main {
+public class MainV1 {
     /*
     이중 우선순위 큐 다국어
     시간 제한	메모리 제한	제출	정답	맞힌 사람	정답 비율
