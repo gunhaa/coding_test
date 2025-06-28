@@ -58,6 +58,7 @@ public class Main {
         visited[start] = true;
 
         for(Integer nodeNo : graph.get(start).linked) {
+            System.out.println("방문한 nodeNo: " + nodeNo);
             if(!visited[nodeNo]) {
                 visited[nodeNo] = true;
                 result++;
