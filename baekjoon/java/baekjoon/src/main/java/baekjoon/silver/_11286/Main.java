@@ -56,6 +56,8 @@ public class Main {
             this.element = element;
         }
 
+        
+        // this - o 가 오름차순으로 설계되어있다, this가 더 클 시 1, 같으면 0, this가 더 작다면 -1을 반환으로 기본 설계되어있음
         @Override
         public int compareTo(AbsHeap o) {
             int t1 = Math.abs(this.element);
