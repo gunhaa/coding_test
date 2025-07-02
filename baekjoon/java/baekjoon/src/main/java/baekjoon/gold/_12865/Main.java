@@ -45,7 +45,7 @@ public class Main {
             knapsack[i] = new int[]{Integer.parseInt(st2.nextToken()), Integer.parseInt(st2.nextToken())};
         }
 
-        // dp[물건종류][무게제한]
+        // dp[물건 개수(knapsacp의 idx를 이용한 누적 개수, 0번 관련 idx가 존재해야 0/불가능을 표기 가능하다)][무게제한]
         int[][] dp = new int[iter+1][limit+1];
 
         // 물건 종류
