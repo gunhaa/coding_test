@@ -1,19 +1,20 @@
-package baekjoon.silver._15654;
+package baekjoon.silver._15663;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main {
-    /* s3
-    N과 M (5)
+    /* s2
+    N과 M (9)
     시간 제한	메모리 제한	제출	정답	맞힌 사람	정답 비율
-    1 초	512 MB	50579	36777	29135	72.129%
+    1 초	512 MB	55647	28101	21442	49.478%
     문제
     N개의 자연수와 자연수 M이 주어졌을 때, 아래 조건을 만족하는 길이가 M인 수열을 모두 구하는 프로그램을 작성하시오.
-    N개의 자연수는 모두 다른 수이다.
 
-    - N개의 자연수 중에서 M개를 고른 수열
-
+    N개의 자연수 중에서 M개를 고른 수열
     입력
     첫째 줄에 N과 M이 주어진다. (1 ≤ M ≤ N ≤ 8)
 
@@ -26,19 +27,20 @@ public class Main {
     */
     static int len;
     static int listLen;
+    static Set<String> duplicatedCheckSet = new HashSet<>();
     static List<Integer> result = new ArrayList<>();
     static List<Integer> list = new ArrayList<>();
     static StringBuilder sb = new StringBuilder();
     static boolean[] visited;
 
     public static void main(String[] args) throws IOException {
-        System.setIn(new FileInputStream("src/main/java/baekjoon/silver/_15654/input"));
+        System.setIn(new FileInputStream("src/main/java/baekjoon/silver/_15663/input"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st1 = new StringTokenizer(br.readLine());
         listLen = Integer.parseInt(st1.nextToken());
         len = Integer.parseInt(st1.nextToken());
         StringTokenizer st2 = new StringTokenizer(br.readLine());
-        visited = new boolean[len];
+        visited = new boolean[listLen];
         for (int i = 0; i < listLen; i++) {
             list.add(Integer.parseInt(st2.nextToken()));
         }
@@ -49,17 +51,24 @@ public class Main {
         System.out.println(sb);
     }
 
+
     static void back(int depth) {
         if (depth == len) {
+            StringBuilder temp = new StringBuilder();
             for (int i : result) {
-                sb.append(i).append(" ");
+                temp.append(i).append(" ");
             }
-            sb.append("\n");
+            temp.append("\n");
+            if(duplicatedCheckSet.contains(temp.toString())) {
+                return;
+            }
+            sb.append(temp);
+            duplicatedCheckSet.add(temp.toString());
             return;
         }
 
         for (int i = 0; i < listLen; i++) {
-            if(visited[i]) {
+            if (visited[i]) {
                 continue;
             }
             visited[i] = true;
@@ -67,7 +76,6 @@ public class Main {
             back(depth + 1);
             result.remove(result.size() - 1);
             visited[i] = false;
-
         }
     }
 }
