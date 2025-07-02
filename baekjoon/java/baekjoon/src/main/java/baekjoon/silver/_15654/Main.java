@@ -1,5 +1,8 @@
 package baekjoon.silver._15654;
 
+import java.io.*;
+import java.util.*;
+
 public class Main {
     /*
     N과 M (5)
@@ -9,7 +12,8 @@ public class Main {
     N개의 자연수와 자연수 M이 주어졌을 때, 아래 조건을 만족하는 길이가 M인 수열을 모두 구하는 프로그램을 작성하시오.
     N개의 자연수는 모두 다른 수이다.
 
-    N개의 자연수 중에서 M개를 고른 수열
+    - N개의 자연수 중에서 M개를 고른 수열
+
     입력
     첫째 줄에 N과 M이 주어진다. (1 ≤ M ≤ N ≤ 8)
 
@@ -20,4 +24,45 @@ public class Main {
 
     수열은 사전 순으로 증가하는 순서로 출력해야 한다.
     */
+    static int len;
+    static int listLen;
+    static List<Integer> result = new ArrayList<>();
+    static List<Integer> list = new ArrayList<>();
+    static StringBuilder sb = new StringBuilder();
+
+    public static void main(String[] args) throws IOException {
+        System.setIn(new FileInputStream("src/main/java/baekjoon/silver/_15654/input"));
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st1 = new StringTokenizer(br.readLine());
+        listLen = Integer.parseInt(st1.nextToken());
+        len = Integer.parseInt(st1.nextToken());
+        StringTokenizer st2 = new StringTokenizer(br.readLine());
+        for (int i = 0; i < listLen; i++) {
+            list.add(Integer.parseInt(st2.nextToken()));
+        }
+        Collections.sort(list);
+        System.out.println(list);
+
+        back(list.get(0), 0);
+        System.out.println(sb);
+    }
+
+    static void back(int start, int depth) {
+        if (depth == len) {
+            for (int i : result) {
+                sb.append(i).append(" ");
+            }
+            sb.append("\n");
+            return;
+        }
+
+        for (int i = 0; i < listLen; i++) {
+            if(result.contains(list.get(i))) {
+                continue;
+            }
+            result.add(list.get(i));
+            back(i + 1, depth + 1);
+            result.remove(result.size() - 1);
+        }
+    }
 }
