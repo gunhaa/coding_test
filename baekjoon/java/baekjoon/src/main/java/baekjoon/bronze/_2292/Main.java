@@ -4,7 +4,7 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-    /*
+    /* b2
     벌집
     시간 제한	메모리 제한	제출	정답	맞힌 사람	정답 비율
     2 초	128 MB	215340	98461	83711	45.154%
