@@ -59,24 +59,26 @@ X와 Y 모두 올바른 괄호열이라면 이들을 결합한 XY도 올바른 �
                 break;
                 case ')': {
                     if (!stack.isEmpty() && stack.peek() == '(') {
-                        if(line.charAt(i-1)=='(') {
+                        if (line.charAt(i - 1) == '(') {
                             result += temp;
                         }
                         stack.pop();
                         temp /= 2;
                     } else {
+                        result = 0;
                         break loop;
                     }
                 }
                 break;
                 case ']': {
                     if (!stack.isEmpty() && stack.peek() == '[') {
-                        if(line.charAt(i-1)=='[') {
+                        if (line.charAt(i - 1) == '[') {
                             result += temp;
                         }
                         stack.pop();
                         temp /= 3;
                     } else {
+                        result = 0;
                         break loop;
                     }
                 }
@@ -85,11 +87,10 @@ X와 Y 모두 올바른 괄호열이라면 이들을 결합한 XY도 올바른 �
 
         }
 
-        if (stack.isEmpty()) {
-            System.out.println(result);
-        } else {
+        if(!stack.isEmpty()) {
             System.out.println(0);
+            return;
         }
-
+        System.out.println(result);
     }
 }
