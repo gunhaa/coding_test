@@ -4,7 +4,7 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-    /*
+    /* s5
     방 번호
 시간 제한	메모리 제한	제출	정답	맞힌 사람	정답 비율
 2 초	128 MB	81213	37234	28170	44.522%

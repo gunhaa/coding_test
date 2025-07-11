@@ -36,79 +36,205 @@ public class Main {
                 board[i][j] = line.charAt(j);
             }
         }
-        System.out.println(Arrays.deepToString(board));
 
-        // 1. 최대 길이를 찾고
-        // 1.1 모든걸 다 찾아서 최대 길이가 가능한 것 끼리 리스트 만들고, 그 것들을 +1이 가능한지 탐색한다, 모두 탐색해서 안되면 그대로, 되면 +1
-        // 2. +1이 될 가능성이 있는지를 탐색한다
-        // 3. 만족하면 종료하고 최대개수를 출력한다
-
-        // 행 탐색
         int max = Integer.MIN_VALUE;
-
+        // 행을 탐색하며, 위 아래 swap을 모두 실행해 가능 값을 찾는다
         for (int i = 0; i < N; i++) {
-            char tempChar = '\u0000';
             int tempCount = 0;
+            int tempChar = '\u0000';
             for (int j = 0; j < N; j++) {
-                if (tempChar == board[i][j]) {
+                if (board[i][j] == tempChar) {
                     tempCount++;
                 } else {
-                    max = Math.max(tempCount, max);
-                    if (max == tempCount) {
-
-                        // +1이 가능한지 점검
-                        // 현재 idx j, 길이 tempCount
-                        // 현 idx의 위 아래 바꿔서 tempChar이 가능한지 탐색
-                        // 마지막 이라면 무조건 탐색, 바뀌어도 탐색
-                        int headIdx = j - tempCount - 1;
-                        int tailIdx = j;
-                        // 함수로 early return을 통한 최적화 가능
-                        if (headIdx >= 0) {
-                            if (i - 1 >= 0) {
-                                // 위가 존재하며 바꿀시 연속된 수와 같다면
-                                if (board[i - 1][j] == tempChar) {
-                                    max = Math.max(max, tempCount + 1);
-                                }
-                            }
-
-                            if (i + 1 < N) {
-                                // 아래가 존재하며 바꿀시 연속된 수와 같다면
-                                if (board[i + 1][j] == tempChar) {
-                                    max = Math.max(max, tempCount + 1);
-                                }
-                            }
-                        }
-
-                        if (i - 1 >= 0) {
-                            // 위가 존재하며 바꿀시 연속된 수와 같다면
-                            if (board[i - 1][tailIdx] == tempChar) {
-                                max = Math.max(max, tempCount + 1);
-                            }
-                        }
-
-                        if (i + 1 < N) {
-                            // 아래가 존재하며 바꿀시 연속된 수와 같다면
-                            if (board[i + 1][tailIdx] == tempChar) {
-                                max = Math.max(max, tempCount + 1);
-                            }
-                        }
-                    }
                     tempChar = board[i][j];
                     tempCount = 1;
                 }
+                max = Math.max(max, tempCount);
+            }
+            // 위로 변경
+            if (i > 0) {
+                for (int k = 0; k < N; k++) {
+                    // swap
+                    tempCount = 0;
+                    tempChar = '\u0000';
+                    char memory = board[i][k];
+                    board[i][k] = board[i - 1][k];
+                    for (int j = 0; j < N; j++) {
+                        if (board[i][j] == tempChar) {
+                            tempCount++;
+                        } else {
+                            tempChar = board[i][j];
+                            tempCount = 1;
+                        }
+                        max = Math.max(max, tempCount);
+                    }
+                    board[i][k] = memory;
+                }
+            }
 
+            // 아래로 변경
+            if (i + 1 < N) {
+                for (int k = 0; k < N; k++) {
+                    tempCount = 0;
+                    tempChar = '\u0000';
+                    char memory = board[i][k];
+                    board[i][k] = board[i + 1][k];
+                    for (int j = 0; j < N; j++) {
+                        if (board[i][j] == tempChar) {
+                            tempCount++;
+                        } else {
+                            tempChar = board[i][j];
+                            tempCount = 1;
+                        }
+                        max = Math.max(max, tempCount);
+                    }
+                    board[i][k] = memory;
+                }
+            }
+            // 좌
+            for (int k = 0; k < N; k++) {
+                tempCount = 0;
+                tempChar = '\u0000';
+                if (k > 0) {
+                    char memory = board[i][k];
+                    board[i][k] = board[i][k - 1];
+                    board[i][k - 1] = memory;
+                    for (int j = 0; j < N; j++) {
+                        if (board[i][j] == tempChar) {
+                            tempCount++;
+                        } else {
+                            tempChar = board[i][j];
+                            tempCount = 1;
+                        }
+                        max = Math.max(max, tempCount);
+                    }
+                    board[i][k - 1] = board[i][k];
+                    board[i][k] = memory;
+                }
+            }
+
+            // 우
+            for (int k = 0; k < N; k++) {
+                tempCount = 0;
+                tempChar = '\u0000';
+                if (k + 1 < N) {
+                    char memory = board[i][k];
+                    board[i][k] = board[i][k + 1];
+                    board[i][k+1] = memory;
+                    for (int j = 0; j < N; j++) {
+                        if (board[i][j] == tempChar) {
+                            tempCount++;
+                        } else {
+                            tempChar = board[i][j];
+                            tempCount = 1;
+                        }
+                        max = Math.max(max, tempCount);
+                    }
+                    board[i][k+1] = board[i][k];
+                    board[i][k] = memory;
+                }
             }
         }
 
-        // 열 탐색
+        // 열탐색
         for (int i = 0; i < N; i++) {
-            Map<Character, Integer> countMap = new HashMap<>();
+            int tempCount = 0;
+            int tempChar = '\u0000';
             for (int j = 0; j < N; j++) {
-                countMap.put(board[j][i], countMap.getOrDefault(board[i][j], 0) + 1);
+                if (board[j][i] == tempChar) {
+                    tempCount++;
+                } else {
+                    tempChar = board[j][i];
+                    tempCount = 1;
+                }
+                max = Math.max(max, tempCount);
             }
-            for (Map.Entry<Character, Integer> entry : countMap.entrySet()) {
-                max = Math.max(max, entry.getValue());
+            // 위로 변경
+            if (i > 0) {
+                for (int k = 0; k < N; k++) {
+                    // swap
+                    tempCount = 0;
+                    tempChar = '\u0000';
+                    char memory = board[k][i];
+                    board[k][i] = board[k][i - 1];
+                    for (int j = 0; j < N; j++) {
+                        if (board[j][i] == tempChar) {
+                            tempCount++;
+                        } else {
+                            tempChar = board[j][i];
+                            tempCount = 1;
+                        }
+                        max = Math.max(max, tempCount);
+                    }
+                    board[k][i] = memory;
+                }
+            }
+
+            // 아래로 변경
+            if (i + 1 < N) {
+                for (int k = 0; k < N; k++) {
+                    tempCount = 0;
+                    tempChar = '\u0000';
+                    char memory = board[k][i];
+                    board[k][i] = board[k][i + 1];
+                    for (int j = 0; j < N; j++) {
+                        if (board[j][i] == tempChar) {
+                            tempCount++;
+                        } else {
+                            tempChar = board[j][i];
+                            tempCount = 1;
+                        }
+                        max = Math.max(max, tempCount);
+                    }
+                    board[k][i] = memory;
+                }
+            }
+
+            // 상 변경
+            for (int k = 0; k < N; k++) {
+                tempCount = 0;
+                tempChar = '\u0000';
+                if (k > 0) {
+                    char memory = board[k][i];
+                    board[k][i] = board[k - 1][i];
+                    board[k - 1][i] = memory;
+                    for (int j = 0; j < N; j++) {
+                        if (board[j][i] == tempChar) {
+                            tempCount++;
+                        } else {
+                            tempChar = board[j][i];
+                            tempCount = 1;
+                        }
+                        max = Math.max(max, tempCount);
+                    }
+                    board[k-1][i] = board[k][i];
+                    board[k][i] = memory;
+                }
+            }
+
+            // 하 변경
+            for (int k = 0; k < N; k++) {
+                tempCount = 0;
+                tempChar = '\u0000';
+                if (k + 1 < N) {
+                    char memory = board[k][i];
+                    board[k][i] = board[k + 1][i];
+                    board[k+1][i] = memory;
+                    for (int j = 0; j < N; j++) {
+                        if (board[j][i] == tempChar) {
+                            tempCount++;
+                        } else {
+                            tempChar = board[j][i];
+                            tempCount = 1;
+                        }
+                        max = Math.max(max, tempCount);
+                    }
+                    board[k+1][i] = board[k][i];
+                    board[k][i] = memory;
+                }
             }
         }
+
+        System.out.println(max);
     }
 }
