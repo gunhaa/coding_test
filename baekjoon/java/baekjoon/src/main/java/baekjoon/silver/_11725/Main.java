@@ -17,53 +17,91 @@ public class Main {
     출력
     첫째 줄부터 N-1개의 줄에 각 노드의 부모 노드 번호를 2번 노드부터 순서대로 출력한다.
     */
+    static List<List<Integer>> graph = new ArrayList<>();
+    static boolean[] visited;
     static int[] results;
+
     public static void main(String[] args) throws IOException {
         System.setIn(new FileInputStream("src/main/java/baekjoon/silver/_11725/input"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         int N = Integer.parseInt(br.readLine());
-
-        results = new int[N+1];
-
-        Node root = new Node(1);
-        for (int i = 0; i < N-1; i++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            root.addChildren(Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken()));
+        visited = new boolean[N + 1];
+        results = new int[N + 1];
+        for (int i = 0; i < N + 1; i++) {
+            graph.add(new ArrayList<>());
         }
+
+        for (int i = 0; i < N - 1; i++) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            addEdge(Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken()));
+        }
+
+
+//        results = new int[N+1];
+//
+//        Node root = new Node(1);
+//        for (int i = 0; i < N-1; i++) {
+//            StringTokenizer st = new StringTokenizer(br.readLine());
+//            root.addChildren(Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken()));
+//        }
 //        System.out.println(Arrays.toString(results));
+
+
+        dfs(1, 1);
+        System.out.println(Arrays.toString(results));
         for (int i = 2; i < results.length; i++) {
-            bw.write(results[i]+"\n");
+            if(i == results.length - 1) {
+                bw.write(results[i]);
+                break;
+            }
+            bw.write(results[i] + "\n");
         }
         bw.flush();
     }
 
-    static class Node {
-        int data;
-        List<Node> children;
-        Node(int v) {
-            this.data = v;
-            this.children = new ArrayList<>();
-        }
+    static void addEdge(int a, int b) {
+        graph.get(a).add(b);
+        graph.get(b).add(a);
+    }
 
-        void addChildren(int a, int b) {
+    static void dfs(int depth, int parent) {
+        visited[depth] = true;
+        results[depth] = parent;
 
-            if(a == data) {
-                children.add(new Node(b));
-                results[b] = a;
-                return;
+        for (int next : graph.get(depth)) {
+            if (!visited[next]) {
+                dfs(next, depth);
             }
-
-            if(b == data) {
-                children.add(new Node(a));
-                results[a] = b;
-                return;
-            }
-
-            for(Node child : children) {
-                child.addChildren(a, b);
-            }
-
         }
     }
+
+//    static class Node {
+//        int data;
+//        List<Node> children;
+//        Node(int v) {
+//            this.data = v;
+//            this.children = new ArrayList<>();
+//        }
+//
+//        void addChildren(int a, int b) {
+//
+//            if(a == data) {
+//                children.add(new Node(b));
+//                results[b] = a;
+//                return;
+//            }
+//
+//            if(b == data) {
+//                children.add(new Node(a));
+//                results[a] = b;
+//                return;
+//            }
+//
+//            for(Node child : children) {
+//                child.addChildren(a, b);
+//            }
+//
+//        }
+//    }
 }
