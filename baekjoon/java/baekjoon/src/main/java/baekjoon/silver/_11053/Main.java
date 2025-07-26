@@ -35,6 +35,7 @@ public class Main {
             seq[i] = Integer.parseInt(st.nextToken());
         }
 
+        // 시작점 설정
         for (int i = 0; i < seq.length; i++) {
             memo[i] = 1;
             for (int j = 0; j < i; j++) {
@@ -45,8 +46,8 @@ public class Main {
             }
         }
 
-//        System.out.println(Arrays.toString(memo));
-//        System.out.println(memo[memo.length-1]);
+        System.out.println(Arrays.toString(memo));
+        System.out.println(memo[memo.length-1]);
         int max = 0;
         for (int len : memo) {
             max = Math.max(max, len);
