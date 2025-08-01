@@ -69,7 +69,7 @@ public class Main {
                     return depth;
                 }
 
-                List<Integer> list = graph.edges.get(cur);
+                List<Integer> list = graph.nodes.get(cur);
                 for(int neighbor : list) {
 
                     if(!visited[neighbor]) {
@@ -84,18 +84,18 @@ public class Main {
     }
 
     static class Graph {
-        List<List<Integer>> edges;
+        List<List<Integer>> nodes;
 
         public Graph(int edgesNum) {
-            this.edges = new LinkedList<>();
+            this.nodes = new LinkedList<>();
             for (int i = 0; i < edgesNum + 1; i++) {
-                this.edges.add(new LinkedList<>());
+                this.nodes.add(new LinkedList<>());
             }
         }
 
         void addEdge(int a, int b) {
-            edges.get(a).add(b);
-            edges.get(b).add(a);
+            nodes.get(a).add(b);
+            nodes.get(b).add(a);
         }
     }
 }
