@@ -1,4 +1,4 @@
-- coding test 관련 기록
+- PS 관련 기록
     - auto push 레포지토리는 그대로 사용(https://github.com/gunhaa/Programmers-Baekjoon)
     - 특별한 기록이 필요한 경우 해당 레포지토리에 기록
 - https://solved.ac/class 의 클래스 순서대로 문제 풀이
